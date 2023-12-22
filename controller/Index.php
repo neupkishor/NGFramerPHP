@@ -6,8 +6,8 @@ use ngframerphp\core\Controller;
 
 class Index extends Controller
 {
-	public function index()
-	{
-		$this->renderView('main', 'index');
+	public function index(): void
+    {
+		echo $this->renderView('main', 'index');
 	}
 }

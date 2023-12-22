@@ -18,12 +18,20 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
+-- Main code starts here.
+
+-- --------------------------------------------------------
+
 -- Database: `neup_accounts`
+CREATE DATABASE if NOT EXISTS `neup_accounts`;
+USE `neup_accounts`;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+
 
 -- --------------------------------------------------------
 
 -- Table structure for table `account_type`
-CREATE TABLE `account_type` (
+CREATE TABLE IF NOT EXISTS `account_type` (
   `accountId` int(11) NOT NULL,
   `type` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -39,7 +47,7 @@ ALTER TABLE `account_type`
 -- --------------------------------------------------------
 
 -- Table structure for table `account_neupid`
-CREATE TABLE `account_neupid` (
+CREATE TABLE  IF NOT EXISTS `account_neupid` (
   `id` int(11) NOT NULL,
   `neupId` varchar(63) DEFAULT NULL,
   `accountId` int(11) DEFAULT NULL
@@ -61,7 +69,7 @@ ALTER TABLE `account_neupid`
 -- --------------------------------------------------------
 
 -- Table structure for table `account_detail`
-CREATE TABLE `account_detail` (
+CREATE TABLE  IF NOT EXISTS `account_detail` (
   `accountId` int(11) NOT NULL,
   `displayName` varchar(63) DEFAULT NULL,
   `displayImage` varchar(255) DEFAULT NULL
@@ -78,7 +86,7 @@ ALTER TABLE `account_detail`
 -- --------------------------------------------------------
 
 -- Table structure for table `account__indiv_detail`
-CREATE TABLE `account__indiv_detail` (
+CREATE TABLE IF NOT EXISTS `account__indiv_detail` (
   `accountId` int(11) NOT NULL,
   `firstName` varchar(63) DEFAULT NULL,
   `middleName` varchar(63) DEFAULT NULL,
@@ -98,7 +106,7 @@ ALTER TABLE `account__indiv_detail`
 -- --------------------------------------------------------
 
 -- Table structure for table `account__brand_detail`
-CREATE TABLE `account__brand_detail` (
+CREATE TABLE IF NOT EXISTS `account__brand_detail` (
   `accountId` int(11) NOT NULL,
   `legalName` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -114,7 +122,7 @@ ALTER TABLE `account__brand_detail`
 -- --------------------------------------------------------
 
 -- Table structure for table `account__dependent_detail`
-CREATE TABLE `account__dependent_detail` (
+CREATE TABLE IF NOT EXISTS `account__dependent_detail` (
   `accountId` int(11) NOT NULL,
   `firstName` varchar(63) DEFAULT NULL,
   `middleName` varchar(63) DEFAULT NULL,
@@ -134,7 +142,7 @@ ALTER TABLE `account__dependent_detail`
 -- --------------------------------------------------------
 
 -- Table structure for table `account_manager`
-CREATE TABLE `account_manager` (
+CREATE TABLE IF NOT EXISTS `account_manager` (
   `id` int(11) NOT NULL,
   `accountId` int(11) DEFAULT NULL,
   `managingAccount` int(11) DEFAULT NULL,
@@ -158,7 +166,7 @@ ALTER TABLE `account_manager`
 -- --------------------------------------------------------
 
 -- Table structure for table `account_contact`
-CREATE TABLE `account_contact` (
+CREATE TABLE IF NOT EXISTS `account_contact` (
   `id` int(11) NOT NULL,
   `accountId` int(11) DEFAULT NULL,
   `detail` varchar(255) DEFAULT NULL
@@ -180,7 +188,7 @@ ALTER TABLE `account_contact`
 -- --------------------------------------------------------
 
 -- Table structure for table `auth_credential`
-CREATE TABLE `auth_credential` (
+CREATE TABLE IF NOT EXISTS `auth_credential` (
   `accountId` int(11) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `2ndAuth` varchar(15) DEFAULT NULL
@@ -197,7 +205,7 @@ ALTER TABLE `auth_credential`
 -- --------------------------------------------------------
 
 -- Table structure for table `auth_otp`
-CREATE TABLE `auth_otp` (
+CREATE TABLE IF NOT EXISTS `auth_otp` (
   `accountId` int(11) NOT NULL,
   `type` varchar(15) DEFAULT NULL,
   `tokenKey` varchar(63) DEFAULT NULL
@@ -214,7 +222,7 @@ ALTER TABLE `auth_otp`
 -- --------------------------------------------------------
 
 -- Table structure for table `auth_session`
-CREATE TABLE `auth_session` (
+CREATE TABLE IF NOT EXISTS `auth_session` (
   `id` int(11) NOT NULL,
   `accountId` int(11) DEFAULT NULL,
   `sessionKey` varchar(255) DEFAULT NULL,

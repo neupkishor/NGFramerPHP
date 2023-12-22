@@ -4,7 +4,10 @@
     "description": "A MVC based framework for php.",
     "license": "MIT",
     "homepage": "https://github.com/neupgroup/ngframerphp",
-    "require": {},
+    "require": {
+        "ext-ctype": "*",
+        "ext-pdo": "*"
+    },
     "authors": [
         {
             "name": "Kishor Neupane",

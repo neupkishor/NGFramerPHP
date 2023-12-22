@@ -38,10 +38,10 @@ class UtilNeupId
     }
 
 
-    public static function isReservedNeupId($pageName): bool
+    public static function isReservedNeupId($askedNeupId): bool
     {
         $reservedNeupId = ['settings', 'neup', 'profile', 'username', 'example', 'home', 'me', 'neupgroup', 'chat', 'messages', 'index'];
-        if (!in_array($pageName, $reservedNeupId)){
+        if (in_array($askedNeupId, $reservedNeupId)){
             return false;
         }
         return true;

@@ -4,14 +4,14 @@ namespace ngframerphp\model\schema;
 
 use ngframerphp\core\Model;
 
-class AuthSession extends Model
+final class AuthSession extends Model
 {
-	private array $data = ['id' => null, 'accountId' => null, 'sessionKey' => null, 'ipAddress' => null, 'userAgent' => null, 'isExpired' => null, 'expiresOn' => null, 'lastLoggedIn' => null, 'loginType' => null, 'loginDetail' => null];
-	private string $tableName = 'auth_session';
-	private array $tableFields = ['id', 'accountId', 'sessionKey', 'ipAddress', 'userAgent', 'isExpired', 'expiresOn', 'lastLoggedIn', 'loginType', 'loginDetail'];
-	private array $insertableFields = ['accountId', 'sessionKey', 'ipAddress', 'userAgent', 'isExpired', 'expiresOn', 'lastLoggedIn', 'loginType', 'loginDetail'];
-	private array $editableFields = ['ipAddress', 'userAgent', 'isExpired', 'expiresOn', 'lastLoggedIn', 'loginDetail'];
-	private array $rules = [
+	protected string $tableName = 'auth_session';
+	protected array $fields = ['id', 'accountId', 'sessionKey', 'ipAddress', 'userAgent', 'isExpired', 'expiresOn', 'lastLoggedIn', 'loginType', 'loginDetail'];
+	protected array $data = ['id' => null, 'accountId' => null, 'sessionKey' => null, 'ipAddress' => null, 'userAgent' => null, 'isExpired' => null, 'expiresOn' => null, 'lastLoggedIn' => null, 'loginType' => null, 'loginDetail' => null];
+	protected array $insertableFields = ['accountId', 'sessionKey', 'ipAddress', 'userAgent', 'isExpired', 'expiresOn', 'lastLoggedIn', 'loginType', 'loginDetail'];
+	protected array $editableFields = ['ipAddress', 'userAgent', 'isExpired', 'expiresOn', 'lastLoggedIn', 'loginDetail'];
+	protected array $rules = [
 		'id' => [self::RULE_ID__NULL],
 		'accountId' => [self::RULE__REQUIRED, self::RULE_ACCOUNTID__NOT_NULL, self::RULE_ACCOUNTID__INTEGER],
 		'sessionKey' => [self::RULE__REQUIRED],
@@ -23,5 +23,5 @@ class AuthSession extends Model
 		'loginType' => [self::RULE__REQUIRED],
 		'loginDetail' => [self::RULE__REQUIRED],
 	];
-	private array $errors = [];
+	protected array $errors = [];
 }

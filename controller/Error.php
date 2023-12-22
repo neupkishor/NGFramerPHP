@@ -7,9 +7,9 @@ use ngframerphp\core\Controller;
 class Error extends Controller
 {
 
-	public function index()
+	public function index(): void
 	{
-		$this->renderView('main', 'error', []);
+		$this->renderView('main', 'error');
 	}
 
 }

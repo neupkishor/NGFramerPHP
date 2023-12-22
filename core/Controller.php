@@ -2,8 +2,6 @@
 
 namespace ngframerphp\core;
 
-use ngframerphp\core\Application;
-
 class Controller
 {
 	// Instantiation of application for this whole main parent Controller class.
@@ -18,43 +16,43 @@ class Controller
 
 
 	// Render view function for controller. Only for ease of use in Controllers.
-	public function renderView($layoutView, $contentView, $contentParam = [])
-	{
+	public function renderView($layoutView, $contentView, $contentParam = []): array|string
+    {
 		return $this->application->response->renderView($layoutView, $contentView, $contentParam);
 	}
 
 
 	// Get body function for controller. Only for ease of use in Controllers.
-	public function getBody()
-	{
+	public function getBody(): array
+    {
 		return $this->application->request->getBody();
 	}
 
 
 	// Get method function for controller. Only for ease of use in Controllers.
-	public function getMethod()
-	{
+	public function getMethod(): string
+    {
 		return $this->application->request->getMethod();
 	}
 
 
 	// Is method get function for controller. Only for ease of use in controllers.
-	public function isMethodGet()
-	{
+	public function isMethodGet(): bool
+    {
 		return $this->application->request->isMethodGet();
 	}
 
 
 	// Is method post function for controller. Only for ease of use in controllers.
-	public function isMethodPost()
-	{
+	public function isMethodPost(): bool
+    {
 		return $this->application->request->isMethodPost();
 	}
 
 
-	// The following function converts one or more string to array, and converts multiple array to one array. Single array's are not changed.
-	function makeArray(...$args)
-	{
+	// The following function converts one or more string to array, and converts multiple array to one array. Single array are not changed.
+	function makeArray(...$args): array
+    {
 		$result = [];
 		foreach ($args as $arg) {
 			if (is_array($arg)) {

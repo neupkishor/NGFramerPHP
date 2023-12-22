@@ -2,16 +2,16 @@
 
 namespace ngframerphp\model\schema;
 
-use ngframer\model\base\ModelFoundation;
+use ngframerphp\model\base\FoundationModel;
 
-class AccountDependentDetail extends ModelFoundation
+final class AccountDependentDetail extends FoundationModel
 {
-	private array $data = ['accountId' => null, 'firstName' => null, 'middleName' => null, 'lastName' => null, 'gender' => null, 'birthDate' => null];
-	private string $tableName = 'account__dependent_detail';
-	private array $tableFields = ['accountId', 'firstName', 'middleName', 'lastName', 'gender', 'birthDate'];
-	private array $insertableFields = ['accountId', 'firstName', 'middleName', 'lastName', 'gender', 'birthDate'];
-	private array $editableFields = ['firstName', 'middleName', 'lastName', 'gender', 'birthDate'];
-	private array $rules = [
+	protected string $tableName = 'account__dependent_detail';
+	protected array $fields = ['accountId', 'firstName', 'middleName', 'lastName', 'gender', 'birthDate'];
+	protected array $data = ['accountId' => null, 'firstName' => null, 'middleName' => null, 'lastName' => null, 'gender' => null, 'birthDate' => null];
+	protected array $insertableFields = ['accountId', 'firstName', 'middleName', 'lastName', 'gender', 'birthDate'];
+	protected array $editableFields = ['firstName', 'middleName', 'lastName', 'gender', 'birthDate'];
+	protected array $rules = [
 		'accountId' => [self::RULE__REQUIRED, self::RULE_ACCOUNTID__NOT_NULL, self::RULE_ACCOUNTID__INTEGER],
 		'firstName' => [self::RULE__REQUIRED, self::RULE_NAME__VALID],
 		'middleName' => [self::RULE_NAME__VALID],
@@ -19,5 +19,5 @@ class AccountDependentDetail extends ModelFoundation
 		'gender' => [self::RULE__REQUIRED, self::RULE_GENDER__VALID],
 		'birthDate' => [self::RULE__REQUIRED, self::RULE_DATE__VALID, self::RULE_BIRTHDATE__VALID, self::RULE_AGE__DEPENDENT]
 	];
-	private array $errors = [];
+	protected array $errors = [];
 }

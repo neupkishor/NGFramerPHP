@@ -2,16 +2,15 @@
 
 namespace ngframerphp\model\schema;
 
-use ngframer\model\base\ModelFoundation;
+use ngframerphp\model\base\FoundationModel;
 
-class AccountBrandDetail extends ModelFoundation
+final class AccountBrandDetail extends FoundationModel
 {
-    private array $data = ['accountId' => null, 'legalName' => null];
-
-    private string $tableName = 'account__brand_detail';
-    private array $fields = ['accountId', 'legalName'];
-    private array $insertableFields = ['accountId', 'legalName'];
-    private array $editableFields = ['legalName'];
-    private array $rules = [];
-    private array $errors = [];
+    protected string $tableName = 'account__brand_detail';
+    protected array $fields = ['accountId', 'legalName'];
+    protected array $data = ['accountId' => null, 'legalName' => null];
+    protected array $insertableFields = ['accountId', 'legalName'];
+    protected array $editableFields = ['legalName'];
+    protected array $rules = [];
+    protected array $errors = [];
 }

@@ -5,7 +5,7 @@ namespace ngframerphp\utility;
 final class UtilCountry
 {
 
-    private array $country;
+    private static array $country;
 
     public function __construct()
     {
@@ -264,7 +264,7 @@ final class UtilCountry
 
 
 
-    public static function isValidCountry($countryCode)
+    public static function isValidCountry($countryCode): bool
     {
         if (array_key_exists($countryCode, UtilCountry::$country)) {
             return true;
@@ -273,7 +273,7 @@ final class UtilCountry
     }
 
 
-    public function getCallingCode($countryCode)
+    public function getCallingCode($countryCode): array|bool
     {
         if (UtilCountry::isValidCountry($countryCode)) {
             return UtilCountry::$country['calling_code'];

@@ -1,15 +1,14 @@
 <?php
 
-namespace ngframer\model\schema;
+namespace ngframerphp\model\schema;
 
-use ngframer\model\base\ModelFoundation;
+use ngframerphp\model\base\FoundationModel;
 
-class AccountContact extends ModelFoundation
+final class AccountContact extends FoundationModel
 {
-    private array $data = ['id' => null, 'accountId' => null, 'detail' => null];
-
     protected string $tableName = 'account_contact';
     protected array $fields = ['id', 'accountId', 'detail'];
+    protected array $data = ['id' => null, 'accountId' => null, 'detail' => null];
     protected array $insertableFields = ['accountId', 'detail'];
     protected array $editableFields = ['detail'];
     protected array $rules = [];

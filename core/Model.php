@@ -2,21 +2,21 @@
 
 namespace ngframerphp\core;
 
+use ngframerphp\utility\UtilDatetime;
 use ngframerphp\utility\UtilGender;
 use ngframerphp\utility\UtilName;
 use ngframerphp\utility\UtilNeupId;
 use ngframerphp\utility\UtilPassword;
 use ngframerphp\utility\UtilUrl;
-use ngframerphp\utility\UtilDatetime;
 
-class Model
+abstract class Model
 {
-	// The properties for the Model Classes.
-	private array $data = [];
-	private array $fields = [];
-	private array $rules = [];
-	private array $errors = [];
-	
+	// Properties to be extended by Model Classes.
+    protected array $fields;
+    protected array $data;
+    protected array $rules;
+    protected array $errors;
+
 
 	// The rules for the data to be inserted to database.
 	public const RULE__REQUIRED =  'RULE__REQUIRED';
@@ -45,30 +45,56 @@ class Model
 
 
 	// Get the fields.
-	private function getFields(): array
+	final protected function getFields(): array
 	{
 		return $this->fields;
 	}
 
 
-	// Set the data.
-	public function loadData(...$args): void
+	// Load the data.
+	final public function loadData(array $rawData): void
+	{
+		foreach ($rawData as $key => $value) {
+            $this->setData($key, $value);
+		}
+	}
+
+
+	// Get the rules.
+	final protected function getRules(): array
+	{
+		return $this->rules;
+	}
+
+
+    // Set the data.
+    final protected function setData($fieldName, $fieldValue): void
     {
-		$argsArray = Application::$application->controller->makeArray(...$args);
-		foreach ($argsArray as $key => $value) {
-			if (in_array($key, $this->getFields())) {
-				$this->data[$key] = $value;
-			}
+        if (in_array($fieldName, $this->getFields())){
+            $this->data[$fieldName] = $fieldValue;
+        }
+    }
+
+
+	// Get the data.
+	final protected function getData($fieldName): mixed
+	{
+		if (array_key_exists($fieldName, $this->data)) {
+			return $this->data[$fieldName];
+		} else {
+			return null;
 		}
 	}
 
 
 	// Function to sanitize the data of the type String, & Array. Checks for the array by looking if the array's key and value are of String type.
-	public function validate(): void
-	{
+	final public function validate(): void
+    {
 		foreach ($this->getRules() as $fieldName => $fieldCriterias) {
 			// Value for that field.
 			$fieldValue = $this->getData($fieldName);
+            $ruleName = "";
+            $ruleData = null;
 
 			// Loop through the criteria for the current field.
 			foreach ($fieldCriterias as $criteria) {
@@ -80,129 +106,128 @@ class Model
 					$ruleName = $criteria;
 				}
 
-				switch ($ruleName) {
-                    case 'RULE_ACCOUNTID__NOT_NULL':
-                    case 'RULE_ID__NOT_NULL':
-                    case 'RULE__REQUIRED':
-						if (empty($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-                    case 'RULE_ID__NULL':
-                    case 'RULE_ACCOUNTID__NULL':
-						if (!empty($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-                    case 'RULE_ID__INTEGER':
-                    case 'RULE_ACCOUNTID__INTEGER':
-						if (!is_int($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-                    case 'RULE_ACCOUNTTYPE__VALID':
-						if (in_array($fieldValue, ['indiv', 'brand', 'dependent'])) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_NAME__VALID':
-						if (!UtilName::isValidName($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_DISPLAYIMAGE__VALID':
-						if (!UtilUrl::isValidURL($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_DATE__VALID':
-						if (!UtilDatetime::isValidDate($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_BIRTHDATE__VALID':
-						if (!UtilDatetime::isValidBirthdate($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_AGE__VALID':
-						if (!UtilDatetime::isValidAge($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_AGE__INDIV':
-						if (!UtilDatetime::isValidIndivAge($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_AGE__DEPENDENT':
-						if (!UtilDatetime::isValidDependentAge($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_GENDER__VALID':
-						if (!UtilGender::isValidGender($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_NEUPID__VALID':
-						if (!UtilNeupId::isValidNeupIdFormat($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_NEUPID__NOT_RESERVED':
-						if (!UtilNeupId::isReservedNeupId($fieldValue)) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_PASSWORD__MIN_PASSWORD_STRENGTH':
-						if (UtilPassword::calculatePasswordStrength($this->data['password'], $this->data['firstName'], $this->data['middleName'], $this->data['lastName'], $this->data['phone'], $this->data['countryName'], $this->data['birthDate'])) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-					case 'RULE_PASSWORD__MATCH':
-						if ($this->data['password'] !== $this->data['retypedPassword']) {
-							$this->setErrors($fieldName, $ruleName);
-						}
-						break;
-				}
+                if ($ruleName !== '') {
+                    switch ($ruleName) {
+                        case 'RULE_ACCOUNTID__NOT_NULL':
+                        case 'RULE_ID__NOT_NULL':
+                        case 'RULE__REQUIRED':
+                            if (empty($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_ID__NULL':
+                        case 'RULE_ACCOUNTID__NULL':
+                            if (!empty($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_ID__INTEGER':
+                        case 'RULE_ACCOUNTID__INTEGER':
+                            if (!is_int($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_ACCOUNTTYPE__VALID':
+                            if (in_array($fieldValue, ['indiv', 'brand', 'dependent'])) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_NAME__VALID':
+                            if (!UtilName::isValidName($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_DISPLAYIMAGE__VALID':
+                            if (!UtilUrl::isValidURL($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_DATE__VALID':
+                            if (!UtilDatetime::isValidDate($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_BIRTHDATE__VALID':
+                            if (!UtilDatetime::isValidBirthdate($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_AGE__VALID':
+                            if (!UtilDatetime::isValidAge($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_AGE__INDIV':
+                            if (!UtilDatetime::isValidIndivAge($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_AGE__DEPENDENT':
+                            if (!UtilDatetime::isValidDependentAge($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_GENDER__VALID':
+                            if (!UtilGender::isValidGender($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_NEUPID__VALID':
+                            if (!UtilNeupId::isValidNeupIdFormat($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_NEUPID__NOT_RESERVED':
+                            if (!UtilNeupId::isReservedNeupId($fieldValue)) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_PASSWORD__MIN_PASSWORD_STRENGTH':
+                            if (UtilPassword::calculatePasswordStrength($this->data['password'], $this->data['firstName'], $this->data['middleName'], $this->data['lastName'], $this->data['phone'], $this->data['countryName'], $this->data['birthDate'])) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                        case 'RULE_PASSWORD__MATCH':
+                            if ($this->data['password'] !== $this->data['retypedPassword']) {
+                                $this->setErrors($fieldName, $ruleName);
+                            }
+                            break;
+                    }
+                }
 			}
 		}
 	}
 
 
-	// Get the rules.
-	private function getRules(): array
-	{
-		return $this->rules;
-	}
-
-
-	// Get the data.
-	private function getData($fieldName)
-	{
-
-		if (isset($this->data[$fieldName])) {
-			return $this->data[$fieldName];
-		} else {
-			return null;
-		}
-	}
-
-
 	// Set the error.
-	private function setErrors(string $fieldName, string $ruleName)
-	{
-		$this->errors[$fieldName] = "ERROR_ON__{$ruleName}";
+	final protected function setErrors(string $fieldName, string $ruleName): void
+    {
+        $this->errors[$fieldName][] = $ruleName;
 	}
+
+
+    // Check for errors.
+    final public function hasErrors($fieldName): bool
+    {
+        return $this->errors[$fieldName] ?? false;
+    }
 
 
 	// Get the error.
-	public function getErrors(): array
+	final public function getErrors($fieldName = null): array
 	{
-		return $this->errors;
+        if ($fieldName !== null){
+            return $this->errors[$fieldName];
+        }
+        return $this->errors;
 	}
 
+
+    // Get the first error.
+    final public function getFirstError($fieldName): string
+    {
+        return $this->getErrors($fieldName)[0];
+    }
 
 
 

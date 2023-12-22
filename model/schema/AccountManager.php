@@ -1,17 +1,16 @@
 <?php
 
-namespace ngframer\model\schema;
+namespace ngframerphp\model\schema;
 
-use ngframer\model\base\ModelFoundation;
+use ngframerphp\model\base\FoundationModel;
 
-class AccountManager extends ModelFoundation
+final class AccountManager extends FoundationModel
 {
-    private array $data = ['id' => null, 'accountId' => null, 'managingAccount' => null, 'permission' => null];
-
-    private string $tableName = 'account_manager';
-    private array $fields = ['id', 'accountId', 'managingAccount', 'permission'];
-    private array $insertableFields = ['accountId', 'managingAccount', 'permission'];
-    private array $editableFields = ['permission'];
-    private array $rules = [];
-    private array $errors = [];
+    protected string $tableName = 'account_manager';
+    protected array $fields = ['id', 'accountId', 'managingAccount', 'permission'];
+    protected array $data = ['id' => null, 'accountId' => null, 'managingAccount' => null, 'permission' => null];
+    protected array $insertableFields = ['accountId', 'managingAccount', 'permission'];
+    protected array $editableFields = ['permission'];
+    protected array $rules = [];
+    protected array $errors = [];
 }

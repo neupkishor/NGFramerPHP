@@ -2,18 +2,17 @@
 
 namespace ngframerphp\model\schema;
 
-use ngframer\model\base\ModelFoundation;
+use ngframerphp\model\base\FoundationModel;
 
-class AccountType extends ModelFoundation
+final class AccountType extends FoundationModel
 {
-	private array $data = ['accountId' => null, 'type' => null];
-
-	private string $tableName = 'account_type';
-	private array $fields = ['accountId', 'type'];
-	private array $insertableFields = ['type'];
-	private array $editableFields = ['type'];
-	private array $rules = [
+	protected string $tableName = 'account_type';
+	protected array $fields = ['accountId', 'type'];
+	protected array $data = ['accountId' => null, 'type' => null];
+	protected array $insertableFields = ['type'];
+	protected array $editableFields = ['type'];
+	protected array $rules = [
 		'type' => [self::RULE_NAME__VALID]
 	];
-	private array $errors = [];
+	protected array $errors = [];
 }

@@ -7,10 +7,13 @@ use ngframerphp\model\SignupModel;
 
 class Signup extends Controller
 {
-	public function index()
-	{
+
+
+
+	public function index(): void
+    {
 		if ($this->isMethodGet()) {
-			$this->renderView('main', 'signup');
+			echo $this->renderView('main', 'signup');
 		}
 		elseif ($this->isMethodPost()) {
 			$this->processSignup();
@@ -18,8 +21,12 @@ class Signup extends Controller
 	}
 
 
-	public function processSignup($data = null)
-	{
-		var_dump($_POST);
+	public function processSignup(): void
+    {
+		$signupModel = new SignupModel;
+		$signupModel->loadData($_POST);
+		$signupModel->validate();
+		$contentParam = ($signupModel->getErrors());
+
 	}
 }

@@ -1,17 +1,16 @@
 <?php
 
-namespace ngframer\model\schema;
+namespace ngframerphp\model\schema;
 
-use ngframer\model\base\ModelFoundation;
+use ngframerphp\model\base\FoundationModel;
 
-class AuthOtp extends ModelFoundation
+final class AuthOtp extends FoundationModel
 {
-    private array $data = ['accountId' => null, 'type' => null, 'tokenKey' => null];
-
-    private string $tableName = 'auth_otp';
-    private array $fields = ['accountId', 'type', 'tokenKey'];
-    private array $insertableFields = ['accountId', 'type', 'tokenKey'];
-    private array $editableFields = ['tokenKey'];
-    private array $rules = [];
-    private array $errors = [];
+    protected string $tableName = 'auth_otp';
+    protected array $fields = ['accountId', 'type', 'tokenKey'];
+    protected array $data = ['accountId' => null, 'type' => null, 'tokenKey' => null];
+    protected array $insertableFields = ['accountId', 'type', 'tokenKey'];
+    protected array $editableFields = ['tokenKey'];
+    protected array $rules = [];
+    protected array $errors = [];
 }
