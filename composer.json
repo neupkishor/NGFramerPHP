@@ -1,0 +1,19 @@
+{
+    "name": "neupgroup/ngframerphp",
+    "type": "project",
+    "description": "A MVC based framework for php.",
+    "license": "MIT",
+    "homepage": "https://github.com/neupgroup/ngframerphp",
+    "require": {},
+    "authors": [
+        {
+            "name": "Kishor Neupane",
+            "homepage": "https://github.com/neupkishor"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ngframerphp\\": "./"
+        }
+    }
+}
