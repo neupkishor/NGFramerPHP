@@ -1,6 +1,6 @@
 <?php
 
-namespace ngframer\model\schema;
+namespace ngframerphp\model\schema;
 
 use ngframer\model\base\ModelFoundation;
 

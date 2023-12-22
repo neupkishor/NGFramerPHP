@@ -16,7 +16,7 @@ class Model
 	private array $fields = [];
 	private array $rules = [];
 	private array $errors = [];
-	
+
 
 	// The rules for the data to be inserted to database.
 	public const RULE__REQUIRED =  'RULE__REQUIRED';
@@ -53,12 +53,31 @@ class Model
 
 	// Set the data.
 	public function loadData(...$args): void
-    {
+	{
 		$argsArray = Application::$application->controller->makeArray(...$args);
 		foreach ($argsArray as $key => $value) {
 			if (in_array($key, $this->getFields())) {
 				$this->data[$key] = $value;
 			}
+		}
+	}
+
+
+	// Get the rules.
+	private function getRules(): array
+	{
+		return $this->rules;
+	}
+
+
+	// Get the data.
+	private function getData($fieldName)
+	{
+
+		if (isset($this->data[$fieldName])) {
+			return $this->data[$fieldName];
+		} else {
+			return null;
 		}
 	}
 
@@ -81,26 +100,26 @@ class Model
 				}
 
 				switch ($ruleName) {
-                    case 'RULE_ACCOUNTID__NOT_NULL':
-                    case 'RULE_ID__NOT_NULL':
-                    case 'RULE__REQUIRED':
+					case 'RULE_ACCOUNTID__NOT_NULL':
+					case 'RULE_ID__NOT_NULL':
+					case 'RULE__REQUIRED':
 						if (empty($fieldValue)) {
 							$this->setErrors($fieldName, $ruleName);
 						}
 						break;
-                    case 'RULE_ID__NULL':
-                    case 'RULE_ACCOUNTID__NULL':
+					case 'RULE_ID__NULL':
+					case 'RULE_ACCOUNTID__NULL':
 						if (!empty($fieldValue)) {
 							$this->setErrors($fieldName, $ruleName);
 						}
 						break;
-                    case 'RULE_ID__INTEGER':
-                    case 'RULE_ACCOUNTID__INTEGER':
+					case 'RULE_ID__INTEGER':
+					case 'RULE_ACCOUNTID__INTEGER':
 						if (!is_int($fieldValue)) {
 							$this->setErrors($fieldName, $ruleName);
 						}
 						break;
-                    case 'RULE_ACCOUNTTYPE__VALID':
+					case 'RULE_ACCOUNTTYPE__VALID':
 						if (in_array($fieldValue, ['indiv', 'brand', 'dependent'])) {
 							$this->setErrors($fieldName, $ruleName);
 						}
@@ -167,25 +186,6 @@ class Model
 						break;
 				}
 			}
-		}
-	}
-
-
-	// Get the rules.
-	private function getRules(): array
-	{
-		return $this->rules;
-	}
-
-
-	// Get the data.
-	private function getData($fieldName)
-	{
-
-		if (isset($this->data[$fieldName])) {
-			return $this->data[$fieldName];
-		} else {
-			return null;
 		}
 	}
 

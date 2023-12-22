@@ -6,13 +6,13 @@ use ngframer\model\base\ModelAdvance;
 use ngframerphp\utility\UtilCommon;
 use ngframerphp\model\schema\{AccountType, AccountDetail, AccountNeupid, AccountIndivDetail, AuthCredential, AuthOtp, AuthSession};
 
-class SigninModel extends ModelAdvance
+class SignupModel extends ModelAdvance
 {
 	private array $fields = ['neupId', 'password', 'otpCode'];
 	private array $rules = [
-		'neupId' => [self::RULE__REQUIRED, self::RULE_NEUPID__NOT_RESERVED],
-		'password' => [self::RULE__REQUIRED],
-		'otpCode' => []
+		'firstName' => [self::RULE__REQUIRED],
+		'middleName' => [],
+		'lastName' => [self::RULE__REQUIRED]
 	];
 	private array $errors = [];
 
